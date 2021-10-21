@@ -58,6 +58,7 @@ class _TextFieldComponentState extends State<TextFieldComponent> {
               style: const TextStyle(
                 color: Color(0xFFA68787),
                 fontSize: 14.0,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
