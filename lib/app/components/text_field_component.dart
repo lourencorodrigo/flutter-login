@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-class TextFieldComponent extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_login/app/constants/colors_constant.dart';
+
+class TextFieldComponent extends StatefulWidget {
   final IconData? icon;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -15,35 +18,66 @@ class TextFieldComponent extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<TextFieldComponent> createState() => _TextFieldComponentState();
+}
+
+class _TextFieldComponentState extends State<TextFieldComponent> {
+  Color _background = ColorsConstant.redLight;
+  final FocusNode _focus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focus.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _focus.removeListener(_onFocusChange);
+    _focus.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    setState(() {
+      _background =
+          _focus.hasFocus ? const Color(0xFFFFF2F2) : ColorsConstant.redLight;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (labelText != null)
+        if (widget.labelText != null)
           Padding(
             padding: const EdgeInsets.only(left: 16, bottom: 4.0),
             child: Text(
-              labelText ?? '',
-              style: TextStyle(
-                color: Colors.red[400],
+              widget.labelText ?? '',
+              style: const TextStyle(
+                color: Color(0xFFA68787),
                 fontSize: 14.0,
               ),
             ),
           ),
-        Container(
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeIn,
           padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           height: 48,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.red.shade200),
+            border: Border.all(color: ColorsConstant.redDark),
             borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-            color: Colors.red[50],
+            color: _background,
           ),
           child: TextField(
-            obscureText: obscureText,
-            keyboardType: keyboardType,
+            focusNode: _focus,
+            obscureText: widget.obscureText,
+            keyboardType: widget.keyboardType,
             decoration: InputDecoration(
-              icon: icon != null
-                  ? Icon(icon, color: Colors.red[200], size: 18)
+              icon: widget.icon != null
+                  ? Icon(widget.icon, color: const Color(0xFFB97E7E), size: 18)
                   : null,
               border: InputBorder.none,
             ),
