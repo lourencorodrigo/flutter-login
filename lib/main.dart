@@ -12,7 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Segoe'),
+      theme: ThemeData(
+        fontFamily: 'Segoe',
+        scaffoldBackgroundColor: const Color(0xFFFDEBEC),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFFE67C7C),
+        ),
+      ),
       home: const Center(
         child: HomePage(),
       ),
