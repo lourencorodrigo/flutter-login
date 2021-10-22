@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/app/components/custom_appbar_component.dart';
-import 'package:flutter_login/app/pages/test_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,17 +9,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isModalOpen = false;
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(
           Icons.expand_less_outlined,
         ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TestPage()),
+          setState(() {
+            isModalOpen = true;
+          });
+
+          showModalBottomSheet(
+            barrierColor: Colors.transparent,
+            context: context,
+            builder: (context) {
+              return Container(
+                height: size.height * 0.5,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
+                  ),
+                ),
+                child: const Text('asdas'),
+              );
+            },
+          ).then(
+            (value) {
+              setState(() {
+                isModalOpen = false;
+              });
+            },
           );
         },
       ),
@@ -34,6 +60,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              isModalOpen ? const Text('ABERTO') : const Text('FECHADO'),
               Image.asset(
                 'assets/images/calendar.png',
               ),
